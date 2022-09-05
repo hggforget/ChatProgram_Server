@@ -1,15 +1,38 @@
+
 <%@ page language="java" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Java后端WebSocket的Tomcat实现</title>
 </head>
+<script type="text/javascript" src="./jquery-3.5.1/jquery-3.5.1.js"></script>
+<script>
+    function queryuser()
+    {
+        $.ajax({
+            url:"/QueryServlet",
+            dataType:"json",
+            type:"post",
+            success:function (data){
+                for(var i=0;i<data.friends.length;i++){
+                    alert(i +":"+ data.friends[i]);
+                }
+            },
+            error:function (){
+                alert("error");
+            }
+    });
+    }
+</script>
 <body>
     Welcome<br/><input id="text" type="text"/>
     <button onclick="send()">发送消息</button>
     <hr/>
     <button onclick="closeWebSocket()">关闭WebSocket连接</button>
+    <button onclick="queryuser()">query</button>
     <hr/>
+
     <div id="message"></div>
 </body>
 
@@ -17,7 +40,7 @@
     var websocket = null;
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://192.168.131.107:8080/websocket");
+        websocket = new WebSocket("ws://192.168.131.107:8080/websocket/-1");
     }
     else {
         alert('当前浏览器 Not support websocket')

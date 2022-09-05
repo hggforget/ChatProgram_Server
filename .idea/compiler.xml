@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ChatProgram_Server" />
+        <module name="JavaWebSocket" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ChatProgram_Server" target="1.5" />
+      <module name="JavaWebSocket" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

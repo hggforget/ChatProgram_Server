@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+
+<Resource
+
+        name="jdbc/mysql"
+
+        type="javax.sql.DataSource"
+
+        auth="Container"
+
+        driverClassName="com.mysql.cj.jdbc.Driver"
+
+        url="jdbc:mysql://localhost:3306/ChatProgram_Server?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false"
+
+        username="root"
+
+        password="hggforget"
+
+        maxActive="10"
+
+        maxIdle="2"
+
+        maxWait="6000"
+
+/>
+
+</Context>
