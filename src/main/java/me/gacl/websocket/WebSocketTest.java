@@ -58,13 +58,19 @@ public class WebSocketTest {
 	public void onMessage(String message, Session session) {
 		System.out.println("来自客户端的消息:" + message);
 		JSONObject object=JSONObject.parseObject(message);
-		Integer userID=Integer.valueOf(object.getString("userID"));
 		String cmd=object.getString("type");
 		WebSocketUtils utils=new WebSocketUtils();
 		if(cmd.equals("query_Friendlist"))
+		{
+			Integer userID=Integer.valueOf(object.getString("userID"));
 			utils.query_Friendlist(session,userID);
+		}
 		else if(cmd.equals("query_mydata"))
+		{
+			Integer userID=Integer.valueOf(object.getString("userID"));
 			utils.query_MyData(session,userID);
+		}
+
 		else if(cmd.equals("sendMsg")) {
 			utils.sendMsg2Friend(session,object);
 		}
@@ -78,11 +84,22 @@ public class WebSocketTest {
 			utils.createGroup(object);
 		}
 		else if(cmd.equals("query_group")){
+			Integer userID=Integer.valueOf(object.getString("userID"));
 			utils.queryGroup(session,userID);
 		}
 		else if(cmd.equals("groupTalk")){
 			utils.groupTalk(this,object);
 		}
+		else if(cmd.equals("queryCon")){
+			utils.queryCon(session,object);
+		}
+		else if(cmd.equals("queryGroupMsg")){
+			utils.queryGroupMsg(session,object);
+		}
+		else if(cmd.equals("register")){
+			utils.register(session,object);
+		}
+
 		//群发消息
 	}
 

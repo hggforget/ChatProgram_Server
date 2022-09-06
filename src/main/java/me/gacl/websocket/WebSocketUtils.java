@@ -22,7 +22,7 @@ public class WebSocketUtils {
     public void query_MyData(Session session,Integer userID)
     {
         userService query=new userService();
-        JSONObject ret=query.QueryNamebyuserID(userID);
+        JSONObject ret=query.QueryDatabyuserID(userID);
         ret.put("type","MyData");
         try {
             System.out.println(ret.toJSONString());
@@ -36,13 +36,15 @@ public class WebSocketUtils {
        Integer srcID=Integer.valueOf(object.getString("userID"));
        Integer dstID=Integer.valueOf(object.getString("friendID"));
         userService query=new userService();
-        JSONObject ret=query.QueryNamebyuserID(srcID);
+        JSONObject ret=query.QueryDatabyuserID(srcID);
        String srcName= ret.getString("userName");
+        String img= ret.getString("img");
        String msg=object.getString("tosend");
         JSONObject pack=new JSONObject();
         pack.put("srcName",srcName);
         pack.put("srcID",srcID);
         pack.put("msg",msg);
+        pack.put("img",img);
         pack.put("type","txMsg");
        WebSocketTest dstWs=WebSocketTest.queryWs(dstID);
         try {
@@ -81,11 +83,22 @@ public class WebSocketUtils {
         messageService messageservice=new messageService();
         Integer userID1=Integer.valueOf(object.getString("userID"));
         Integer userID2=Integer.valueOf(object.getString("friendID"));
-        int timestamp=object.getInteger("timestamp").intValue();
+        Integer timestamp=object.getInteger("timestamp");
         String message= object.getString("tosend");
         int ret= messageservice.Insertmessage(userID1,userID2,timestamp,message);
         System.out.println("Insertmessage Result:"+Integer.toString(ret));
     }
+
+    public void InsertGroupmessage(JSONObject object){
+        messageService messageservice=new messageService();
+        Integer userID=Integer.valueOf(object.getString("userID"));
+        Integer groupID=Integer.valueOf(object.getString("groupID"));
+        Integer timestamp=object.getInteger("timestamp");
+        String message= object.getString("tosend");
+        int ret= messageservice.InsertGroupmessage(userID,groupID,timestamp,message);
+        System.out.println("InsertGroupmessage Result:"+Integer.toString(ret));
+    }
+
     public void createGroup(JSONObject object){
         grouplistService grouplistservice=new grouplistService();
         Integer userID=Integer.valueOf(object.getString("userID"));
@@ -110,14 +123,17 @@ public class WebSocketUtils {
         Integer srcID=Integer.valueOf(object.getString("userID"));
         Integer dstID=Integer.valueOf(object.getString("groupID"));
         userService query=new userService();
-        JSONObject ret=query.QueryNamebyuserID(srcID);
+        JSONObject ret=query.QueryDatabyuserID(srcID);
         String srcName= ret.getString("userName");
         String msg=object.getString("tosend");
+        String srcimg=object.getString("img");
         JSONObject pack=new JSONObject();
         pack.put("srcName",srcName);
         pack.put("srcID",srcID);
         pack.put("msg",msg);
+        pack.put("srcimg",srcimg);
         pack.put("type","txMsg");
+        InsertGroupmessage(object);
         membersService membersservice =new membersService();
         List<String>userlist=membersservice.queryMembers(dstID);
         for (int i=0;i<userlist.size();i++)
@@ -139,5 +155,47 @@ public class WebSocketUtils {
             }
         }
 
+    }
+
+    public void queryCon(Session session,JSONObject object){
+        messageService messageservice=new messageService();
+        Integer userID1=Integer.valueOf(object.getString("userID"));
+        Integer userID2=Integer.valueOf(object.getString("friendID"));
+        JSONObject pack=messageservice.queryConversation(userID1,userID2);
+        pack.put("type","conMsg");
+        try {
+            System.out.println(pack);
+            session.getBasicRemote().sendText(pack.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void queryGroupMsg(Session session,JSONObject object){
+        messageService messageservice=new messageService();
+        Integer groupID=Integer.valueOf(object.getString("groupID"));
+        JSONObject pack=messageservice.queryGroupMsg(groupID);
+        pack.put("type","groupMsg");
+        try {
+            System.out.println(pack);
+            session.getBasicRemote().sendText(pack.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void register(Session session,JSONObject object){
+        String userName=object.getString("userName");
+        String pwd=object.getString("pwd");
+        String img=object.getString("img");
+        userService userservice=new userService();
+        Integer userid=userservice.AddUser(userName,img,pwd);
+        JSONObject pack=new JSONObject();
+        pack.put("userID",userid);
+        pack.put("type","regFd");
+        try {
+            session.getBasicRemote().sendText(pack.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

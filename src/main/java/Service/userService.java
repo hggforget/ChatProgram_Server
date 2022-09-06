@@ -20,4 +20,12 @@ public class userService {
         JSONObject object=userdao.QueryAlluser();
         return object;
     }
+    public int AddUser(String userName,String img,String pwd){
+        userDAO userdao=new userDAO();
+        return userdao.AddUser(userName,img,pwd);
+    }
+    public JSONObject QueryDatabyuserID(Integer userID){
+        userDAO userdao=new userDAO();
+        return userdao.QueryDatabyuserID(userID);
+    }
 }
