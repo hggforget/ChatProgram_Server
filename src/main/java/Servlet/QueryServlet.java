@@ -30,7 +30,7 @@ public class QueryServlet extends HttpServlet {
         Connection con= DBUtils.getConnection();
         try {
             Statement stmt = con.createStatement();
-            String sql = "SELECT friendID FROM friendlist where userID=1";
+            String sql = "SELECT friendID FROM friendlist ";
             ResultSet rs = stmt.executeQuery(sql);
             JSONObject object = new JSONObject();
             List<String>idlist=new ArrayList<String>();

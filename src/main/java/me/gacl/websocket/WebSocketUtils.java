@@ -44,7 +44,7 @@ public class WebSocketUtils {
         pack.put("srcName",srcName);
         pack.put("srcID",srcID);
         pack.put("msg",msg);
-        pack.put("img",img);
+        pack.put("srcimg",img);
         pack.put("type","txMsg");
        WebSocketTest dstWs=WebSocketTest.queryWs(dstID);
         try {
@@ -126,7 +126,7 @@ public class WebSocketUtils {
         JSONObject ret=query.QueryDatabyuserID(srcID);
         String srcName= ret.getString("userName");
         String msg=object.getString("tosend");
-        String srcimg=object.getString("img");
+        String srcimg=ret.getString("img");
         JSONObject pack=new JSONObject();
         pack.put("srcName",srcName);
         pack.put("srcID",srcID);

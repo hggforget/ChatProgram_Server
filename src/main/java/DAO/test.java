@@ -12,7 +12,7 @@ public class test {
         Connection con=DBUtils.getConnection();
         try {
             Statement stmt = con.createStatement();
-            String sql = "SELECT userID FROM user";
+            String sql = "SELECT friendID FROM friendlist";
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
                 int id  = rs.getInt("UserID");

@@ -18,7 +18,8 @@ public class userDAO {
         con=DBUtils.getConnection();
         String ret=null;
         try {
-            stmt = con.createStatement();
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             String sql = "SELECT userName FROM user where userID="+userID.toString();
             rs = stmt.executeQuery(sql);
             rs.last(); // 游标移到最后, 获得rs长度
@@ -38,7 +39,8 @@ public class userDAO {
         con=DBUtils.getConnection();
         JSONObject ret=null;
         try {
-            stmt = con.createStatement();
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             String sql = "SELECT userName,img FROM user where userID="+userID.toString();
             rs = stmt.executeQuery(sql);
             rs.last(); // 游标移到最后, 获得rs长度
